@@ -22,12 +22,12 @@ in precisely the right place.
 Thus it is easy to align the stencil before taping it to the jig.
 Also, if the taped stencil slips, you will know since the stencil no longer fits the pocket.
 
-Another difference with generic jigs is that you don't need to cut down one of two L-shaped pieces: 
+Another difference with generic jigs is that you don't need to cut down the LR L-shaped piece: 
 it is printed to fit the PCB exactly.
 
 ## Status
 
-This is experimental.  Just try it to see if it helps you.
+This is experimental and lightly tested.  Just try it to see if it helps you.
 
 I have tested this design on only two boards.
 Thus I have tested that:
@@ -36,7 +36,7 @@ Thus I have tested that:
   - it works without requiring tweaking due to variances in accuracy in the fabs
 
 I have not tested with a full range of board and stencil thicknesses and sizes.
-The parameterization might not be correct.
+The flow of parameters might not be correct.
 
 ## How to use
 
@@ -50,7 +50,7 @@ The parameterization might not be correct.
 
 To use for another board, just clone the FreeCad file, then change parameters in the spreadsheet, and so forth.
 
-## Generic use of L-shaped jigs to solder paste PCBs
+## Using generic L-shaped jigs to solder paste PCBs
 
 Both pieces lay on a work surface.
 Both pieces are the thickness of the PCB.
@@ -74,30 +74,36 @@ This jig is different because it is further custom/specialized to a PCB.
 
 Here the upper-left L-shaped piece is slightly deeper/taller than the PCB.
 It has a shallow pocket the size of the stencil.
-The pocket is a little deeper than the stencil, to hold the stencil securely.
-The stencil then rests flush with the top of the PCB.
+The pocket is a little deeper than the stencil.
+The stencil rests flush with the top of the PCB.
+The pocket holds the stencil securely,
+in correct alignment with the PCB.
+With a generic jig, you must manually align
+the stencil with the PCB.
 
 Since the pocket is slightly deeper than the stencil depth,
 you must use a squeegee that fits inside the stencil (and misses the tape.)
+With a generic jig, you can use a squeegee that is wider than the stencil.
 
 In a generic jig, the tape rises from the jig surface to the top of the stencil,
 forming a sloppy hinge.
 In this jig, the tap descends very slightly (say from the jig surface to the top of the stencil, forming a more perfect hinge.
 
-## Using the jig
+## Using this jig
 
-Use the jig just as for a generic jig.
 Only the preparation of the jig differs.
+Paste PCBs using the jig just as for a generic jig.
+
 
 ### Preparation
 
 1.  Pin the LR body to a work surface.
 2.  Place a PCB in the notch.
 3.  Slide the UL body against the PCB.
-4.  Place the stencil in the pocket of the UL body.
+4.  *Place the stencil in the pocket of the UL body.*  This is the step that requires manual alignment using a generic jig.
 5.  Check the alignment of the stencil holes with the pads on the PCB.
 6.  Use one strip of tape to tape the top edge of the stencil to the UL body of the jig.  The tape serves as a hinge.
-7   Check alignment again.
+7.  Check alignment again.
 
 The stencil should align unless: 
   - you have made an error in dimensioning
@@ -109,24 +115,32 @@ The stencil should align unless:
 
 The jig must be customized for each PCB design.
 
-### Preliminaries: measuring the paste bounding box.
+### Preliminaries
+
+#### Measuring the paste bounding box.
 
 The stencil fab doesn't exactly care where the PCB edge is.
 The stencil fab creates a stencil having a margin around the bounding box of the pasted pads on the PCB.  This complicates the design of the jig, but the calculations are present in the spreadsheet.
 
 You will however need to measure the bounding box of the pasted pads on the PCB.
-Measure the offset from the UL corner of the PCB
-to the upper left corner of the bounding box of pasted pads.
-Measure the lower right corner of the bounding box of pasted pads.
+Measure the offset from the upper left (UL) corner of the PCB
+to the UL corner of the bounding box of pasted pads.
+Measure the lower right (LR) corner of the bounding box of pasted pads.
 In other words, measure from the left side of the PCB to the left side of the left-most pasted pad on the PCB, and so forth.
 
-### Preliminaries: stencil thickness
+#### Stencil thickness
 
 The jig assumes the stencil is 3 or 4 mils thick (roughly 0.08 or 0.1 mm ).
 The pocket for the jig is 0.2 mm deep so the top surface of the stencil is about 0.1 mm
 below the top surface of the frame.
 The thickness of the stencil is not a parameter
 but you can adjust the *FrameH* parameter.
+
+#### Coordinate system
+
+The design has the origin of the coordinate system at the UL corner of the PCB.
+This only concerns you if you are reading the formulas in the spreadsheet
+or drastically change the FreeCad design.
 
 ### Data flow in the FreeCad design
 
@@ -136,19 +150,19 @@ Main sketches in the beginning of the model tree:
   - Stencil rect
   - Frame (jig) edge rect
 
-These are all dimensioned via the spreadsheet in the design.
+These sketches are all dimensioned via the spreadsheet in the design.
 
 The sketches are all copied into the pads and pockets of the two pieces/bodies: UL and LR.
 
 Thus to customize the design you only need to change parameters in the spreadsheet.
 
-### Parameters
+### Important parameters changed for each PCB board
 
 Dimensions of the PCB :
 
   - *PCBWidth*
   - *PCBLength*
-  - *PCBDepth* (Note currently thin boards .8mm depth.  This affects the height of the jig.)
+  - *PCBDepth* (Note currently for thin boards having 0.8 mm depth.  This affects the height of the jig.)
 
 Distances from PCB UL corner to paste bounding box UL 
 corner:
@@ -161,13 +175,16 @@ corner:
   - *PasteBoundsLRX*
   - *PasteBoundsLRY*
 
-Jig margin, the width of the frame to surround the stencil, somewhat arbitrary
+### Secondary parameters, changed less often
+
+Jig margin, the width of the frame to surround the stencil, somewhat arbitrary and rarely change.
   - *FrameMargin*
 
-Stencil margin, the width of the stencil that surrounds the pasted area.  This is what you chose when ordering the stencil, defaults to 1.5" but I use 0.75" (19.05 mm):
+Stencil margin, the width of the stencil that surrounds the pasted area. 
+This is what you chose when ordering the stencil, defaults to 1.5" but I use 0.75" (19.05 mm). Rarely changed, only if you change the ordinary stencil margin you order :
   - *StencilMargin*  
 
-Dimension of LR body.  Somewhat arbitrary.  Choose enough to give you room to work.  The UL and LR bodies together do not form a rectangle; the LR body is larger so it extends away from the pasted area.
+Dimension of LR body.  Somewhat arbitrary.  Choose enough to give you room to work.  The UL and LR bodies together do not form a rectangle; the LR body is larger so it extends away from the pasted area.  Rarely changed.
 
   - *LRBodyW*
   - *LRBodyL*
@@ -181,7 +198,7 @@ Whether the jig works depends on several tolerances:
   - the accuracy of the stencil fab
   - the accuracy of your measurments of bounding box of the paste on the PCB.
 
-It seems that the accuracy of the cutting of the edge of a PCB has the least accuracy.
+It seems that the board fab's cutting of the edge of a PCB is the least accurate step.
 When a board is cut wrong, the stencil might not line up correctly.
 
 The parameters are currently in values having around 0.05 mm precision
