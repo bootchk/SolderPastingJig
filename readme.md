@@ -220,6 +220,18 @@ Distances from the PCB's UL corner to the paste bounding box's LR corner:
 - *PasteBoundsLRX*
 - *PasteBoundsLRY*
 
+Adjustment/corrections/fudge factors.
+Change these if for any reason the stencil does not align.
+Used to calculate the UL of the stencil.
+They are small tweaks to align the stencil.
+They are signed and can be negative.
+Default to 0.0.
+Typical values are 0.05 or 0.1 mm.
+
+- *StencilAdjustX*
+- *StencilAdjustY*
+
+
 ### Secondary parameters, changed less often
 
 Jig margin: the width of the frame around the stencil. This is somewhat
@@ -234,8 +246,8 @@ Change this parameter only if you order a stencil with a different margin.
 *StencilMargin*
 
 LR body dimensions: these are somewhat arbitrary; choose values that leave you
-enough room to work. The UL and LR bodies do not form a rectangle together. The
-LR body extends beyond the paste area. These dimensions rarely need to change.
+enough room to work. 
+The UL and LR bodies do not form a rectangle together. The LR body extends beyond the paste area. These dimensions rarely need to change.
 
 - *LRBodyW*
 - *LRBodyL*
